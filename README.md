@@ -5,6 +5,7 @@
 
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Flask](https://img.shields.io/badge/Flask-2.0.1-blue)
+![Tailwind](https://img.shields.io/badge/tailwind-2.2.6-blueviolet)
 
 medSCHED is an all-in-one application for all of your medical needs. At its core, it is a scheduler and a reminder app for your medicines, that is, it reminds you whenever you need to take a certain pill. It is especially aimed for those, who have trouble remembering or are too busy with their own schedule that they do not keep track of time. 
 
@@ -41,12 +42,17 @@ somerandomname\Scripts\activate #For Windows; use backslash
 Use pip to install all the modules and libraries required for medSCHED in the required.txt
 
 ```
-pip install -r required.txt
+pip install -r requirements.txt
+```
+
+Install postcss and tailwind using npm.
+```
+npm install postcss -D tailwindcss@latest postcss@latest autoprefixer@latest
 ```
 
 ### Run Flask Server
 
-Before running make sure that port 5500 is free. You can start the development server like so
+Before running make sure that port 5000 is free or you can use any other port by passing the `port number` in the run function. You can start the development server like so
 
 ```
 python3 main.py # For nix

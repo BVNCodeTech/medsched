@@ -1,0 +1,21 @@
+ 
+{
+
+    "name":"medsched",
+    "version": "1.0.0",
+    "description": "medSCHED is an all-in-one application for all of your medical needs.",
+  
+  "scripts": {
+    "postcss:build": "postcss static/styles.pcss -o static/styles.css",
+    "prestart": "npm run postcss:build",
+    "prebuild": "npm run postcss:build -- --env=production"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.3.1",
+    "postcss": "^8.3.6",
+    "tailwindcss": "^2.2.6"
+  },
+  "dependencies": {
+    "postcss-cli": "^8.3.1"
+  }
+}
