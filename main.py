@@ -2,7 +2,7 @@ from flask import Flask, flash, request, session
 from flask.templating import render_template
 from werkzeug.utils import redirect
 import bcrypt
-from users import check_existing_user, add_new_user, check_user_credentials
+from functions.users import check_existing_user, add_new_user, check_user_credentials
 
 app = Flask(__name__)
 app.secret_key = 'subhogay'
