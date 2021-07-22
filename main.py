@@ -81,5 +81,10 @@ def prescriptions():
 def settings():
     return render_template('app/settings.html')
 
+#Object views
+@app.route('/add-medicine')
+def add_medicine():
+    return render_template('app/add-medicine.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
