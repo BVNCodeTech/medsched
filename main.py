@@ -13,8 +13,7 @@ def index():
     return render_template('index.html')
 
 
-
-
+#Authentication
 @app.route('/signup')
 def signup():
     return render_template('signup.html')
@@ -58,7 +57,29 @@ def login_verify():
             flash('Incorrect username or password!', 'error')
             return render_template('login.html')
 
+#App Views
+@app.route('/dashboard')
+def dashboard():
+    return render_template('app/dashboard.html')
 
+
+@app.route('/schedule')
+def schedule():
+    return render_template('app/schedule.html')
+
+
+@app.route('/medicines')
+def medicines():
+    return render_template('app/medicines.html')
+
+
+@app.route('/prescriptions')
+def prescriptions():
+    return render_template('app/prescriptions.html')
+
+@app.route('/settings')
+def settings():
+    return render_template('app/settings.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
