@@ -5,6 +5,7 @@
 
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Flask](https://img.shields.io/badge/Flask-2.0.1-blue)
+![Tailwind](https://img.shields.io/badge/tailwind-2.2.6-blueviolet)
 
 medSCHED is an all-in-one application for all of your medical needs. At its core, it is a scheduler and a reminder app for your medicines, that is, it reminds you whenever you need to take a certain pill. It is especially aimed for those, who have trouble remembering or are too busy with their own schedule that they do not keep track of time. 
 
