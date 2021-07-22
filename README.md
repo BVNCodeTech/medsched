@@ -16,7 +16,7 @@ medSCHED also comes with a web-scraper which would also show you related informa
 
 ### Installing Virtual Environment
 
-Be sure to have python >=3.8 installed in your machine. Next create a virtual environment by installing and using `virtualenv`
+Be sure to have python >=3.8 installed in your machine and added to `$PATH` for *nix and to `environment variables` in Windows. Next create a virtual environment by installing and using `virtualenv`
 
 ```
 pip install virtualenv
@@ -34,6 +34,23 @@ Finally, activate the env
 source somerandomname/bin/activate #For mac os and linux
 
 somerandomname\Scripts\activate #For Windows; use backslash
+```
 
+### Installing Requirements
+
+Use pip to install all the modules and libraries required for medSCHED in the required.txt
+
+```
+pip install -r required.txt
+```
+
+### Run Flask Server
+
+Before running make sure that port 5500 is free. You can start the development server like so
+
+```
+python3 main.py # For nix
+
+python main.py # For Windows
 ```
 
