@@ -44,6 +44,11 @@ Use pip to install all the modules and libraries required for medSCHED in the re
 pip install -r requirements.txt
 ```
 
+Install postcss and tailwind using npm.
+```
+npm install postcss -D tailwindcss@latest postcss@latest autoprefixer@latest
+```
+
 ### Run Flask Server
 
 Before running make sure that port 5000 is free or you can use any other port by passing the `port number` in the run function. You can start the development server like so
