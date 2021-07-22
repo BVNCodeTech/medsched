@@ -14,13 +14,15 @@ def get_medicines(query):
     src = []
     for i in range(content.count('<h1 class="ooufh">')):
         index = content.index('<h1 class="ooufh">')
-        src_index = content.index('alt="medicine" src="')
+        try:
+            src_index = content.index('alt="medicine" src="')
+            link = content[src_index:src_index+100].split('"')
+            src.append(link[2])
+        except:
+            pass # THEY FUCKING IP BLOCKED ME - NL
         name = content[index:index+50].split('<')
-        link = content[src_index:src_index+100].split('"')
         names.append(name[1].split('>')[1])
-        src.append(link[2])
         content = content[index+18:]
-        print(src)
 
     return {"names":names, "prices":prices, "image links":src}
 
