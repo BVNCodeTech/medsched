@@ -9,6 +9,15 @@
 <body>
     <h1>Welcome to MedSched </h1>
     <p>We are here to help you schedule all your medicines. Accessibility for one and all!
-        <a href="/login">Click here</a> to get started</p> 
+        <a href="/login">Click here</a> to get started</p>
+{% with messages = get_flashed_messages() %}
+	  {% if messages %}
+	    {% for message in messages %}
+		  <div class="alert alert-warning alert-dismissible" role="alert">
+			{{message}}
+		  </div>
+		{% endfor %}
+	  {% endif %}
+	{% endwith %}
 </body>
 </html>

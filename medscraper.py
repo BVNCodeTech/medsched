@@ -1,9 +1,9 @@
 import requests
-import re 
+import re
 
 
 # Command takes in the unformatter medicine name and returns a *DICTIONARY* of names and prices (which are lists)
-def get_medicine_price(query):
+def get_medicines(query):
     if ' ' in query:
         query = query.replace(' ', '+')
 
@@ -16,12 +16,4 @@ def get_medicine_price(query):
         names.append(name[1].split('>')[1])
         content = content[index+18:]
 
-    returner = {"names":names, "prices":prices}
-    return returner 
-
-if __name__ == '__main__':
-    a = get_medicine_price('indocap sr')
-    print(a['names'])
-    print(a['prices'])
-    
-# print(requests.get('https://pharmeasy.in/search/all?name=indocap+sr').text)
+    return {"names":names, "prices":prices}

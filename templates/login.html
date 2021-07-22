@@ -8,11 +8,21 @@
 </head>
 <body>
     <h1>Log in</h1>
-    <form action="{{ url_for("login")}}" method="POST">
-    <label for="first name">Enter first name </label>
-    <input type="text" id="firstname" name="fname" placeholder="firstname">
-    <label for="last name">Enter last name </label>
-    <input type="text" id="lastname" name="lname" placeholder="lastname">
-    <button type="submit">Login</button>
+        <form action="{{ url_for("login_verify")}}" method="POST">
+            <label for="first name">Enter email</label>
+            <input type="email" id="email" name="email" placeholder="Email">
+            <label for="first name">Enter password</label>
+            <input type="password" id="password" name="password" placeholder="Password">
+            <button type="submit">Login</button>
+        </form>
+{% with messages = get_flashed_messages() %}
+	  {% if messages %}
+	    {% for message in messages %}
+		  <div class="alert alert-warning alert-dismissible" role="alert">
+			{{message}}
+		  </div>
+		{% endfor %}
+	  {% endif %}
+	{% endwith %}
 </body>
 </html>
