@@ -41,12 +41,12 @@ somerandomname\Scripts\activate #For Windows; use backslash
 Use pip to install all the modules and libraries required for medSCHED in the required.txt
 
 ```
-pip install -r required.txt
+pip install -r requirements.txt
 ```
 
 ### Run Flask Server
 
-Before running make sure that port 5500 is free. You can start the development server like so
+Before running make sure that port 5000 is free or you can use any other port by passing the `port number` in the run function. You can start the development server like so
 
 ```
 python3 main.py # For nix
