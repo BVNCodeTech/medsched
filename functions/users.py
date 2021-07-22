@@ -6,6 +6,7 @@ client = MongoClient(
     'mongodb+srv://pancham:pancham@niggaballs.tjmtx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
 db = client['medicine_schedule']
 user_collection = db['users']
+schedules = db['schedule']
 
 
 def check_existing_user(email):
@@ -20,6 +21,10 @@ def add_new_user(name, email, password):
         '_id': email.lower(),
         'name': name,
         'password': password
+    })
+    schedules.insert_one({
+        '_id':email,
+        'medicines':{}
     })
 
 
