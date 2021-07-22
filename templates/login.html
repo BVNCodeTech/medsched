@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedSched@login</title>
+</head>
+<body>
+    <h1>Log in</h1>
+    <form action="{{ url_for("login")}}" method="POST">
+    <label for="first name">Enter first name </label>
+    <input type="text" id="firstname" name="fname" placeholder="firstname">
+    <label for="last name">Enter last name </label>
+    <input type="text" id="lastname" name="lname" placeholder="lastname">
+    <button type="submit">Login</button>
+</body>
+</html>
