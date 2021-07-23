@@ -15,7 +15,7 @@
 <body>
     <div class="flex flex-no-wrap ">
         <!-- Sidebar starts -->
-        <div class="w-64 absolute sm:relative bg-gray-800 shadow md:h-screen flex-col justify-between hidden sm:flex">
+        <div class="w-64 absolute h-screen sm:relative bg-primary-blue-light shadow flex-col justify-between hidden sm:flex">
             <div class="px-8 h-full">
                 <div class="h-16 w-full flex items-center">
                     <img src="../../static/img/logo.png" />
@@ -66,8 +66,8 @@
                     </li>
                 </ul>
             </div>
-            <div class="px-8 border-t border-gray-700">
-                <ul class="w-full flex items-center justify-between bg-gray-800">
+            <div class="px-8 border-t border-gray-100">
+                <ul class="w-full flex items-center justify-between bg-primary-blue-light">
                     <li class="cursor-pointer text-white pt-5 pb-3">
                         <button aria-label="show notifications" class="focus:outline-none focus:ring-2 rounded focus:ring-gray-300">
                             <svg  xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bell" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -108,8 +108,8 @@
                 </ul>
             </div>
         </div>
-        <div class="w-64 z-40 absolute bg-gray-800 shadow md:h-full flex-col justify-between sm:hidden transition duration-150 ease-in-out" id="mobile-nav">
-            <button aria-label="toggle sidebar" id="openSideBar" class="h-10 w-10 bg-gray-800 absolute right-0 mt-16 -mr-10 flex items-center shadow rounded-tr rounded-br justify-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 rounded focus:ring-gray-800" onclick="sidebarHandler(true)">
+        <div class="w-64 z-40 absolute h-screen bg-primary-blue-light shadow flex-col justify-between sm:hidden transition duration-150 ease-in-out" id="mobile-nav">
+            <button aria-label="toggle sidebar" id="openSideBar" class="h-10 w-10 bg-primary-blue-light absolute right-0 mt-16 -mr-10 flex items-center shadow rounded-tr rounded-br justify-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-offset-2 rounded focus:ring-gray-800" onclick="sidebarHandler(true)">
                 <svg  xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-adjustments" width="20" height="20" viewBox="0 0 24 24" stroke-width="1.5" stroke="#FFFFFF" fill="none" stroke-linecap="round" stroke-linejoin="round">
                     <path stroke="none" d="M0 0h24v24H0z" />
                     <circle cx="6" cy="10" r="2" />
@@ -197,7 +197,7 @@
                     </div>
                 </div>
             </div>
-            <div class="px-8 border-t border-gray-700">
+            <div class="px-8 border-t border-gray-100">
                 <ul class="w-full flex items-center justify-between bg-gray-800">
                     <li class="cursor-pointer text-white pt-5 pb-3">
                         <button aria-label="show notifications" class="focus:outline-none focus:ring-2 rounded focus:ring-gray-300">
@@ -242,37 +242,45 @@
         <!-- Sidebar ends -->
 
         <!-- Container Start -->
-        <div class="container mx-auto py-10 h-64 md:w-4/5 w-11/12 px-6 flex flex-no-wrap">
-
-            <div class="flex h-screen w-full justify-center mx-5">
-                <div class="w-full  mb-2 justify-center rounded-lg text-white">
+        <div class="container mx-auto h-64 md:w-4/5 w-full flex flex-col flex-no-wrap">
+            <div class="bg-primary-blue-light mx-5 px-8 my-5 flex-grow rounded-lg text-white justify-center">
+                <div class="flex-col">
+                    <h3 class="md:text-3xl my-7 sm:text-2xl">Hi John Doe!</h3>
+                    <p class="my-7 text-sm font-sans">
+                        Welcome to medSCHED, your medical reminder. Get started by clicking
+                        on adding a new medicine and then set your reminder.
+                    </p>
+                </div>
+            </div>
+            <div class="flex justify-center mx-5">
+                <div class="w-full mb-2 justify-center rounded-lg text-white">
                    <h3 class="text-white p-3 md:text-2xl lg:text-2xl text-lg"></h3>
                    <div class="p-5 pt-1 flex-wrap  flex items-center gap-2 justify-center">
-                      <div class="transition duration-500 ease-in-out bg-gradient-to-r flex-auto  w-42 h-42  from-gray-800 to-gray-700  shadow-lg    rounded-lg transform hover:from-gray-700 hover:to-gray-600">
+                      <div class="bg-primary-green-light flex-auto  w-42 h-42  from-gray-800 to-gray-700  shadow-lg    rounded-lg transform hover:from-gray-700 hover:to-gray-600">
                          <div class="md:p-7 p-4">
-                            <h2 class=" text-xl text-center text-gray-200 capitalize">Next Dose</h2>
-                            <h3 class="text-sm  text-gray-400  text-center">in 3 Hours</h3>
+                            <h2 class=" text-xl text-center text-primary-green-dark capitalize">Next Dose</h2>
+                            <h3 class="text-sm  text-primary-green-dark  text-center">in 3 Hours</h3>
                          </div>
                       </div>
-                      <div class="bg-gradient-to-r flex-auto w-42 h-42  from-gray-800 to-gray-700    shadow-lg    rounded-lg">
+                      <div class="bg-primary-blue-accent flex-auto w-42 h-42  from-gray-800 to-gray-700    shadow-lg    rounded-lg">
                          <div class="md:p-7 p-4">
-                            <h2 class="text-xl text-center text-gray-200 capitalize">Today</h2>
-                            <h3 class="text-sm  text-gray-400  text-center">2 Doses</h3>
+                            <h2 class="text-xl text-center text-primary-blue-dark capitalize">Today</h2>
+                            <h3 class="text-sm  text-primary-blue-dark  text-center">2 Doses</h3>
                          </div>
                       </div>
-                      <div class="bg-gradient-to-r flex-auto  w-42 h-42  from-gray-800 to-gray-700    shadow-lg    rounded-lg">
+                      <div class="bg-primary-yellow-accent flex-auto  w-42 h-42  from-gray-800 to-gray-700    shadow-lg    rounded-lg">
                          <div class="md:p-7 p-4">
-                            <h2 class="text-lg text-center text-gray-200 capitalize">
+                            <h2 class="text-lg text-center text-primary-yellow-dark capitalize">
                                 <span>07:40 AM</span>
                                 <span>-</span>
                                 <span>11:30 AM</span></h2>
-                            <h3 class="text-sm  text-gray-400  text-center">Intermediate Fasting</h3>
+                            <h3 class="text-sm  text-primary-yellow-dark  text-center">Intermediate Fasting</h3>
                          </div>
                       </div>
-                      <div class="bg-gradient-to-r flex-auto  w-42 h-42  from-gray-800 to-gray-700    shadow-lg    rounded-lg">
+                      <div class="bg-primary-red-accent flex-auto  w-42 h-42  shadow-lg    rounded-lg">
                          <div class="md:p-7 p-4">
-                            <h2 class="text-lg text-center text-gray-200 capitalize" style="">New Delhi</h2>
-                            <h3 class="text-sm  text-gray-400  text-center">city</h3>
+                            <h2 class="text-lg text-center text-primary-red-dark capitalize">New Delhi</h2>
+                            <h3 class="text-sm  text-primary-red-dark  text-center">city</h3>
                          </div>
                       </div>
                    </div>
