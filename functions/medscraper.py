@@ -26,4 +26,3 @@ def get_medicines(query):
 
     return {"names":names, "prices":prices, "image links":src}
 
-get_medicines('indocap sr')

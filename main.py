@@ -1,11 +1,11 @@
 from datetime import time
 from flask import Flask, flash, request, session
 from flask.templating import render_template
-from pymongo.encryption import _DATA_KEY_OPTS
 from werkzeug.utils import redirect
 import bcrypt
 from functions.users import check_existing_user, add_new_user, check_user_credentials
 from functions.scheduler import add_medicine
+import datetime
 
 app = Flask(__name__)
 app.secret_key = 'subhogay'
@@ -16,7 +16,7 @@ def index():
     return render_template('index.html')
 
 
-#Authentication
+# Authentication
 @app.route('/signup')
 def signup():
     return render_template('signup.html')
@@ -60,35 +60,33 @@ def login_verify():
             flash('Incorrect username or password!', 'error')
             return render_template('login.html')
 
-#App Views
+
+# App Views
 @app.route('/dashboard')
 def dashboard():
     return render_template('app/dashboard.html')
 
-#App Views
-@app.route('/testing', methods=["GET", "POST"])
-def testing():
-    if request.method == "POST":
-        session["user"] = 'adusharma22@gmial.com'
-        data = request.form
-        email = session["user"]
-        medicine = data["medicine"]
-        time = data["time"]
-        days = data["days"]
-        start = data["start"]
-        end = data["end"]
-        add_medicine(email, medicine, time, days, start, end)
 
-    return render_template('testing.html')
+@app.route('/schedule/add', methods=["GET", "POST"])
+def add_schedule():
+    return render_template('add_schedule.html')
+
+
+@app.route('/schedule/submit', methods=['GET',"POST"])
+def submit_schedule():
+    data = request.form
+    coll
 
 
 @app.route('/schedule')
 def schedule():
     return render_template('app/schedule.html')
 
+
 @app.route('/settings')
 def settings():
     return render_template('app/settings.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)

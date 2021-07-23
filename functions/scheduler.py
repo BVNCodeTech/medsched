@@ -7,6 +7,7 @@ client = MongoClient(
 db = client['medicine_schedule']
 scheduledb = db['schedule']
 
+
 def add_medicine(email, medicine, time, days, start, end):
 
     document = scheduledb.find_one({'_id':email.lower()})
@@ -15,6 +16,7 @@ def add_medicine(email, medicine, time, days, start, end):
     res = new.replace("'", '"')
     res = json.loads(res)
     scheduledb.replace_one(document, res)
+
 
 def edit_medicine(email, old_medicine_name, new_medicine_name):
     document = scheduledb.find_one({'_id':email.lower()})
