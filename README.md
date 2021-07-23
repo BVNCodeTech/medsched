@@ -15,6 +15,8 @@ medSCHED also comes with a web-scraper which would also show you related informa
 
 # Installation
 
+In case you want to run a development server on your local machine, then follow the following steps.
+
 ### Get the repository
 
 Clone the repository
