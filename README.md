@@ -47,7 +47,7 @@ pip install -r requirements.txt
 
 Install postcss and tailwind using npm.
 ```
-npm install postcss -D tailwindcss@latest postcss@latest autoprefixer@latest
+npm install postcss -D tailwindcss@latest postcss@latest autoprefixer@latest @fortawesome/fontawesome-free
 ```
 
 ### Run Flask Server

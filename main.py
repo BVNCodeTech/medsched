@@ -86,6 +86,10 @@ def testing():
 def schedule():
     return render_template('app/schedule.html')
 
+@app.route('/add')
+def add_event():
+    return render_template('app/add-medicine.html')
+
 @app.route('/settings')
 def settings():
     return render_template('app/settings.html')
