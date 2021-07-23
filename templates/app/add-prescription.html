@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>medSCHED - Dashboard</title>
+    <title>medSCHED - Prescription</title>
     <!-- Styles -->
     <link rel="stylesheet" href="static/styles.css" />
     <!-- For plain html -->
@@ -201,113 +201,20 @@
               </button>
             </div>
             <!-- Form start  -->
-            <form action="/schedule/submit" method="post">
+            <form action="/prescription/submit" method="post" enctype = "multipart/form-data">
               <div class="shadow sm:rounded-md sm:overflow-hidden">
                 <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
                   <div class="flex flex-col">
-                    <label for="medicine-name" class="block text-sm font-medium text-gray-700">
-                    Medicine Name
+                    <label for="prescription-name" class="block text-sm font-medium text-gray-700">
+                    Prescription Name
                     </label>
                     <div class="mt-1 w-full flex rounded-md shadow-sm rounded-l-md border border-r-0 border-gray-300">
-                      <input type="text" name="medicine-name" id="medicine-name" class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-md sm:text-sm " placeholder="Penicillin">
+                      <input type="text" name="prescription-name" id="prescription-name" class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-md sm:text-sm " placeholder="Penicillin">
+                    </div>
+                    <div class="mt-1 w-full flex rounded-md shadow-sm rounded-l-md border border-r-0 border-gray-300">
+                      <input type="file" name="file" id="file" class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-md sm:text-sm " placeholder="Penicillin">
                     </div>
                   </div>
-                  <label for="hours" class="block text-sm font-medium text-gray-700">
-                  Time
-                  </label>
-                  <div class="flex">
-                    <select id="hours" name="hours" autocomplete="hours" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                      <option>01</option>
-                      <option>02</option>
-                      <option>03</option>
-                      <option>04</option>
-                      <option>05</option>
-                      <option>06</option>
-                      <option>07</option>
-                      <option>08</option>
-                      <option>09</option>
-                      <option>10</option>
-                      <option>11</option>
-                      <option>12</option>
-                    </select>
-                    <span class="mx-2">
-                    :
-                    </span>
-                    <select id="minutes" name="minutes" autocomplete="minutes" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                      <option>00</option>
-                      <option>05</option>
-                      <option>15</option>
-                      <option>20</option>
-                      <option>25</option>
-                      <option>30</option>
-                      <option>35</option>
-                      <option>40</option>
-                      <option>45</option>
-                      <option>50</option>
-                      <option>55</option>
-                    </select>
-                    <!-- Am/PM selection.
-                      For this what you can do is that if the user selects am then take the time
-                      as it is
-                      but if the user selects pm then add 12 to the hours variable.
-                      -->
-                    <select id="halftime" name="halftime" autocomplete="minutes" class="mt-1 block w-full py-2 mx-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                      <option>AM</option>
-                      <option>PM</option>
-                    </select>
-                  </div>
-                  <div>
-                    <label class="block text-sm font-medium text-gray-700">
-                    Days
-                    </label>
-                    <div class="grid md:grid-cols-2 lg:grid-cols-3 grid-cols-1 mt-3 gap-4">
-                      <!-- Monday  -->
-                      <div class="">
-                        <input id="monday" name="monday" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
-                        <label for="monday" class="font-medium text-gray-700">Monday</label>
-                      </div>
-                      <!-- Tuesday  -->
-                      <div class="">
-                        <input id="tueday" name="tueday" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
-                        <label for="tueday" class="font-medium text-gray-700">Tuesday</label>
-                      </div>
-                      <!-- Wednesday  -->
-                      <div class="">
-                        <input id="wednesday" name="wednesday" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
-                        <label for="wednesday" class="font-medium text-gray-700">Wednesday</label>
-                      </div>
-                      <!-- Thursday  -->
-                      <div class="">
-                        <input id="thursday" name="thursday" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
-                        <label for="thursday" class="font-medium text-gray-700">Thursday</label>
-                      </div>
-                      <!-- Friday  -->
-                      <div class="">
-                        <input id="friday" name="friday" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
-                        <label for="friday" class="font-medium text-gray-700">Friday</label>
-                      </div>
-                      <!-- Saturday  -->
-                      <div class="">
-                        <input id="saturday" name="saturday" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
-                        <label for="saturday" class="font-medium text-gray-700">Saturday</label>
-                      </div>
-                      <!-- Sunday  -->
-                      <div class="">
-                        <input id="sunday" name="sunday" type="checkbox" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
-                        <label for="sunday" class="font-medium text-gray-700">Sunday</label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="flex mx-2">
-                    <div class="flex-1"><label for="start-date" class="font-medium text-gray-700">Start Date</label>
-                      <input type="date" name="start-date" id="start-date" required>
-                    </div>
-                    <div class="flex-1 mx-2">
-                      <label for="end-date" class="font-medium text-gray-700">End Date</label>
-                      <input type="date" name="end-date" id="end-date" required>
-                    </div>
-                  </div>
-                </div>
                 <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
                   <button type="submit" >
 <!--                    class="inline-flex md:invisible justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"-->
@@ -329,12 +236,12 @@
       function goBack() {
         window.history.back();
       }
-      
+
       var sideBar = document.getElementById("mobile-nav");
       var toggler = document.getElementById("mobile-toggler");
       sideBar.style.transform = "translateX(-260px)";
       let moved = true;
-      
+
       function sidebarHandler() {
         if (moved) {
           sideBar.style.transform = "translateX(0px)";

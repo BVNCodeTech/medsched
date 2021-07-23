@@ -1,7 +1,7 @@
 from datetime import time
 from flask import Flask, flash, request, session
 from flask.templating import render_template
-from werkzeug.utils import redirect
+from werkzeug.utils import redirect, secure_filename
 import bcrypt
 from functions.users import check_existing_user, add_new_user, check_user_credentials
 from functions.scheduler import add_medicine
@@ -9,6 +9,7 @@ import datetime
 
 app = Flask(__name__)
 app.secret_key = 'subhogay'
+app.config['UPLOAD_FOLDER'] = '/user_temporary_files'
 
 
 @app.route('/')
@@ -42,7 +43,10 @@ def signup_verify():
 
 @app.route('/login')
 def login():
-    return render_template('login.html')
+    if session['login']:
+        return redirect('/dashboard')
+    else:
+        return render_template('login.html')
 
 
 @app.route('/login/verify', methods=["GET", "POST"])
@@ -55,10 +59,18 @@ def login_verify():
             session['user'] = email
             session['login'] = True
             flash('Logged in')
-            return redirect('/')
+            return redirect('/dashboard')
         else:
             flash('Incorrect username or password!', 'error')
             return render_template('login.html')
+
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    session['login'] = False
+    session['user'] = None
+    return redirect('/login')
 
 
 # App Views
@@ -67,25 +79,40 @@ def dashboard():
     return render_template('app/dashboard.html')
 
 
-@app.route('/schedule/add', methods=["GET", "POST"])
-def add_schedule():
-    return render_template('add_schedule.html')
-
-
-@app.route('/schedule/submit', methods=['GET',"POST"])
-def submit_schedule():
-    data = request.form
-    coll
-
-
 @app.route('/schedule')
 def schedule():
     return render_template('app/schedule.html')
 
 
-@app.route('/add')
-def add_event():
+@app.route('/schedule/add', methods=["GET", "POST"])
+def add_schedule():
     return render_template('app/add-medicine.html')
+
+
+@app.route('/schedule/submit', methods=['GET',"POST"])
+def submit_schedule():
+    data = request.form
+    medicine = data['medicine-name']
+
+
+@app.route('/prescription')
+def prescription_view():
+    pass
+
+
+@app.route('/prescription/add')
+def add_prescription():
+    return render_template('app/add-prescription.html')
+
+
+@app.route('/prescription/submit', methods=['GET','POST'])
+def submit_prescription():
+    data = request.form
+    print(data)
+    prescription_title = data.get('prescription-name')
+    file = request.files['file']
+    file.save(secure_filename(file.filename))
+
 
 
 @app.route('/settings')
