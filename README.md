@@ -15,7 +15,7 @@ medSCHED also comes with a web-scraper which would also show you related informa
 
 # Installation
 
-## Get the repo
+### Get the repository
 
 Clone the repository
 
