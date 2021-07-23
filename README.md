@@ -15,6 +15,16 @@ medSCHED also comes with a web-scraper which would also show you related informa
 
 # Installation
 
+## Get the repo
+
+Clone the repository
+
+```
+git clone https://github.com/BVNCodeTech/medsched.git
+
+cd medsched
+```
+
 ### Installing Virtual Environment
 
 Be sure to have python >=3.8 installed in your machine and added to `$PATH` for *nix and to `environment variables` in Windows. Next create a virtual environment by installing and using `virtualenv`
