@@ -154,7 +154,7 @@ def dashboard():
             data = fetch_user_schedule(datetime.now(IST) + timedelta(days=1), session['user'])
             data = dict(sorted(data.items(), key=lambda item: item[1]))
             for medicine in data:
-                count +=1
+                count += 1
                 if count < 4:
                     tomorrow_card_html += tomorrow_card(medicine, data[medicine])
 
@@ -168,15 +168,29 @@ def dashboard():
                     day_after_card_html += day_after_card(medicine, data[medicine])
             session['upcoming_count'] = upcoming_count
 
-            return render_template('app/dashboard.html', name=user_name(session['user']).title(), card1=card1, card2=card2,
-                                   card3=card3, upcoming_count=upcoming_count, today_card_html=today_card_html,
-                                   tomorrow_card_html=tomorrow_card_html, day_after_card_html=day_after_card_html)
+            if not upcoming:
+                card1 = f"""<div class="md:p-7 p-4">
+                                    <h2 class=" text-xl text-center text-primary-green-dark capitalize">Add some data from scheduler</h2>
+                                  </div>"""
+                card2 = f"""<div class="md:p-7 p-4">
+                                        <h2 class="text-xl text-center text-primary-blue-dark capitalize">Today</h2>
+                                        <h3 class="text-sm  text-primary-blue-dark  text-center">{total_doses} doses</h3>
+                                      </div>"""
+                return render_template('app/dashboard.html', name=user_name(session['user']).title(), card1=card1,
+                                       card2=card2, upcoming_count=upcoming_count, today_card_html=today_card_html,
+                                       tomorrow_card_html=tomorrow_card_html, day_after_card_html=day_after_card_html)
+            else:
+                return render_template('app/dashboard.html', name=user_name(session['user']).title(), card1=card1,
+                                       card2=card2,
+                                       card3=card3, upcoming_count=upcoming_count, today_card_html=today_card_html,
+                                       tomorrow_card_html=tomorrow_card_html, day_after_card_html=day_after_card_html)
         else:
             card1 = f"""<div class="md:p-7 p-4">
                                     <h2 class=" text-xl text-center text-primary-green-dark capitalize">Add some data from scheduler</h2>
                                   </div>"""
 
-            return render_template('app/dashboard.html', name=user_name(session['user']).title(), card1=card1, upcoming_count=0)
+            return render_template('app/dashboard.html', name=user_name(session['user']).title(), card1=card1,
+                                   upcoming_count=0)
     else:
         return redirect('/login')
 
