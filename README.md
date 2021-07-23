@@ -79,3 +79,5 @@ python main.py # For Windows
 ![screencast1](docs/screencast.png)
 The Dashboard
 
+![screencast2](docs/screencast2.png)
+Adding A Reminder
