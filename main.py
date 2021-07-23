@@ -4,8 +4,9 @@ from flask.templating import render_template
 from werkzeug.utils import redirect, secure_filename
 import bcrypt
 from functions.users import check_existing_user, add_new_user, check_user_credentials
-from functions.scheduler import add_medicine
+from functions.scheduler import add_medicine, fetch_user_schedule, card
 from datetime import datetime
+
 
 app = Flask(__name__)
 app.secret_key = 'subhogay'
@@ -84,7 +85,36 @@ def dashboard():
 
 @app.route('/schedule')
 def schedule():
-    return render_template('app/schedule.html')
+    if session['user']:
+        data = fetch_user_schedule(session['user'])
+        now = str(datetime.now()).split('.')[0][-8:-3]
+        data['current_time'] = now
+
+        upcoming = {}
+        completed = {}
+
+        data = dict(sorted(data.items(), key=lambda item: item[1]))
+
+        checkpoint = False
+        for medicine in data:
+            if medicine == 'current_time':
+                checkpoint = True
+            elif checkpoint:
+                upcoming[medicine] = data[medicine]
+            else:
+                completed[medicine] = data[medicine]
+
+        upcoming_card_html = ""
+        for medicine in upcoming:
+            upcoming_card_html += card(medicine.title(), upcoming[medicine])
+
+        completed_card_html = ""
+        for medicine in completed:
+            completed_card_html += card(medicine.title(), completed[medicine])
+
+        return render_template('app/schedule.html', completed_card_html=completed_card_html, upcoming_card_html=upcoming_card_html)
+    else:
+        return redirect('/login')
 
 
 @app.route('/schedule/add', methods=["GET", "POST"])
@@ -103,21 +133,25 @@ def submit_schedule():
         'start_date': datetime.strptime(data['start-date'].replace('-',''), '%Y%m%d'),
         'end_date':datetime.strptime(data['end-date'].replace('-',''), '%Y%m%d')
     }
-#datetime.strptime(f"{data['hours']}:{data['minutes']} {data['halftime']}", '%I:%M %p')
-    data['medicine-name']=None
-    data['hours'] = None
-    data['minutes'] = None
-    data['halftime'] = None
-    data['start-date'] = None
-    data['end-date'] = None
 
-    days = []
-    for key in data:
-        if data[key]:
-            days.append(key)
-    schedule_data['days'] = days
-    add_medicine(session['user'], schedule_data)
-    return redirect('/schedule')
+    if schedule_data['start_date'] < schedule_data['end_date']:
+        data['medicine-name']=None
+        data['hours'] = None
+        data['minutes'] = None
+        data['halftime'] = None
+        data['start-date'] = None
+        data['end-date'] = None
+
+        days = []
+        for key in data:
+            if data[key]:
+                days.append(key)
+        schedule_data['days'] = days
+        add_medicine(session['user'], schedule_data)
+        return redirect('/schedule')
+    else:
+        flash("Start date can't be before end date")
+        return redirect('/schedule/add')
 
 
 @app.route('/prescription')

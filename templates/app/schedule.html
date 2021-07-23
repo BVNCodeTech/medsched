@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>medSCHED - Dashboard</title>
+    <title>medSCHED - Schedule</title>
     <!-- Styles -->
     <link rel="stylesheet" href="static/styles.css" />
     <!-- For plain html -->
@@ -205,33 +205,7 @@
               </div>
               <!-- Column Cards  -->
               <div class="flex-col flex md:flex-row lg:flex-col">
-                <div class="flex flex-col card rounded-lg my-5 p-3 shadow-md">
-                  <p class="text-gray-800 my-3">[Memoji] Create prototype Mobile for get notification in Principle.</p>
-                  <div class="flex">
-                    <div class="bg-primary-blue-light text-white p-1 rounded-lg flex">
-                      <object class="h-5 mr-1 mt-1" type="image/svg+xml" data="../../static/svg/clock.svg"></object>
-                      <p class="mt-1 font-medium">Mar 24</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="flex flex-col card rounded-lg my-5 p-3 shadow-md">
-                  <p class="text-gray-800 my-3">[Memoji] Create prototype Mobile for get notification in Principle.</p>
-                  <div class="flex">
-                    <div class="bg-primary-blue-light text-white p-1 rounded-lg flex">
-                      <object class="h-5 mr-1 mt-1" type="image/svg+xml" data="../../static/svg/clock.svg"></object>
-                      <p class="mt-1 font-medium">Mar 24</p>
-                    </div>
-                  </div>
-                </div>
-                <div class="flex flex-col card rounded-lg my-5 p-3 shadow-md">
-                  <p class="text-gray-800 my-3">[Memoji] Create prototype Mobile for get notification in Principle.</p>
-                  <div class="flex">
-                    <div class="bg-primary-blue-light text-white p-1 rounded-lg flex">
-                      <object class="h-5 mr-1 mt-1" type="image/svg+xml" data="../../static/svg/clock.svg"></object>
-                      <p class="mt-1 font-medium">Mar 24</p>
-                    </div>
-                  </div>
-                </div>
+              {{ upcoming_card_html|safe }}
               </div>
             </div>
             <!-- Column 2 (In Progress)-->
