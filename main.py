@@ -104,15 +104,19 @@ def schedule():
             else:
                 completed[medicine] = data[medicine]
 
+        upcoming_count = 0
         upcoming_card_html = ""
         for medicine in upcoming:
+            upcoming_count += 1
             upcoming_card_html += card(medicine.title(), upcoming[medicine])
 
+        completed_count = 0
         completed_card_html = ""
         for medicine in completed:
+            completed_count+=1
             completed_card_html += card(medicine.title(), completed[medicine])
 
-        return render_template('app/schedule.html', completed_card_html=completed_card_html, upcoming_card_html=upcoming_card_html)
+        return render_template('app/schedule.html', completed_card_html=completed_card_html, upcoming_card_html=upcoming_card_html, upcoming_count=upcoming_count, completed_count=completed_count)
     else:
         return redirect('/login')
 

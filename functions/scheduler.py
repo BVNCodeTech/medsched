@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 from flask import session
 import json
-from datetime import datetime, date
+from datetime import datetime
 import calendar
 
 client = MongoClient(
@@ -46,13 +46,13 @@ def fetch_user_schedule(user=None):
     return today_meds
 
 
-def card(medicine, time):
+def card(medicine:str, time):
     card_html = f"""<div class="flex flex-col card rounded-lg my-5 p-3 shadow-md">
-                  <p class="text-gray-800 my-3">{medicine}</p>
+                  <p class="text-gray-800 my-3">{medicine.title()}</p>
                   <div class="flex">
                     <div class="bg-primary-blue-light text-white p-1 rounded-lg flex">
-                      <object class="h-5 mr-1 mt-1" type="image/svg+xml" data="../../static/svg/clock.svg"></object>
-                      <p class="mt-1 font-medium">{time} | {date.today()}</p>
+                      <i class="fas mt-1.5 mx-1 fa-clock"></i>
+                      <p class="mt-1 font-medium">{time}</p>
                     </div>
                   </div>
                 </div>"""

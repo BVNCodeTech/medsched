@@ -74,3 +74,8 @@ python3 main.py # For nix
 python main.py # For Windows
 ```
 
+# Screencasts
+
+![screencast1](docs/screencast.png)
+The Dashboard
+
