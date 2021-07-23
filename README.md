@@ -15,6 +15,18 @@ medSCHED also comes with a web-scraper which would also show you related informa
 
 # Installation
 
+In case you want to run a development server on your local machine, then follow the following steps.
+
+### Get the repository
+
+Clone the repository
+
+```
+git clone https://github.com/BVNCodeTech/medsched.git
+
+cd medsched
+```
+
 ### Installing Virtual Environment
 
 Be sure to have python >=3.8 installed in your machine and added to `$PATH` for *nix and to `environment variables` in Windows. Next create a virtual environment by installing and using `virtualenv`
@@ -47,7 +59,9 @@ pip install -r requirements.txt
 
 Install postcss and tailwind using npm.
 ```
-npm install postcss -D tailwindcss@latest postcss@latest autoprefixer@latest
+npm install postcss -D tailwindcss@latest postcss@latest autoprefixer@latest @fortawesome/fontawesome-free
+
+npm install @tailwindcss/forms
 ```
 
 ### Run Flask Server
