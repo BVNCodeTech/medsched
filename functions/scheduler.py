@@ -30,7 +30,7 @@ def edit_medicine(email, old_medicine_name, new_medicine_name):
     scheduledb.replace_one(document, new)
 
 
-def fetch_user_schedule(user=None):
+def fetch_user_schedule(day, user=None):
     document = scheduledb.find_one({'_id': user.lower()})
     medicines = document['medicines']
     med_dates = []
@@ -39,8 +39,8 @@ def fetch_user_schedule(user=None):
 
     today_meds = {}
     for med_date in med_dates:
-        if datetime.now() < med_date[2]:
-            today_meds[med_date[0]] = medicines[med_date[0]]['dose_time']
+        if day < med_date[2]:
+            today_meds[med_date[0]] = medicines[med_date[0]]['dose_time'][:-3]
         else:
             pass
     return today_meds

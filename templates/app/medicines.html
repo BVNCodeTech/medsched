@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>medSCHED - Schedule</title>
+    <title>medSCHED - Medicines</title>
     <!-- Styles -->
     <link rel="stylesheet" href="static/styles.css" />
     <!-- For plain html -->
@@ -186,10 +186,10 @@
       <div class="sm:ml-64  w-full">
         <div class="container mx-auto h-64 md:w-4/5 w-full px-4 flex flex-col flex-no-wrap">
           <div class="flex flex-col my-9">
-            <p class="text-3xl font-semibold my-7 dark:text-white">Schedule</p>
+            <p class="text-3xl font-semibold my-7 dark:text-white">Medicines</p>
             <p class="text-sm text-gray-700 dark:text-gray-200">
-              Click <span class="bg-gray-200 text-primary-blue-light">+ New </span> To create a new list and wait for the project manager card.<br>
-              Don't create a card by yourself to manage a good collaboration.
+              Click <span class="bg-gray-200 text-primary-blue-light">Buy now</span> to buy the medicines in your schedule. Powered by PharmEasy.
+
             </p>
           </div>
           <!-- Columns  -->
@@ -198,32 +198,17 @@
             <div class="my-2 mx-2 flex-1 flex flex-col">
               <!-- Column Header  -->
               <div class="flex rounded-md bg-gray-200 p-2">
-                <p class="text-gray-900 font-semibold">Next Up</p>
+                <p class="text-gray-900 font-semibold">Your medicines</p>
                 <div class="flex-grow"></div>
                 <!-- Spacer -->
-                <div class="py-1 px-3 bg-gray-800 rounded text-white flex items-center justify-center text-xs">{{ upcoming_count }}</div>
+                <div class="py-1 px-3 bg-gray-800 rounded text-white flex items-center justify-center text-xs">{{ total }}</div>
               </div>
               <!-- Column Cards  -->
               <div class="flex-col flex md:flex-row lg:flex-col">
-              {{ upcoming_card_html|safe }}
+              {{ medicine_card_html|safe }}
               </div>
             </div>
             <!-- Column 2 (Completed)-->
-            <div class="mx-2 my-2 flex flex-1 flex-col">
-              <!-- Column Header  -->
-              <div class="flex rounded-md bg-gray-200 p-2">
-                <p class="text-gray-900 font-semibold">Completed</p>
-                <div class="flex-grow"></div>
-                <!-- Spacer -->
-                <div class="py-1 px-3 bg-gray-800 rounded text-white flex items-center justify-center text-xs">{{ completed_count }}</div>
-              </div>
-              <!-- Column Cards  -->
-              <div class="flex-col flex md:flex-row lg:flex-col">
-
-                 {{ completed_card_html|safe }}
-
-              </div>
-            </div>
           </div>
         </div>
       </div>
@@ -247,7 +232,7 @@
       var toggler = document.getElementById("mobile-toggler");
       sideBar.style.transform = "translateX(-260px)";
       let moved = true;
-      
+
       function sidebarHandler() {
         if (moved) {
           sideBar.style.transform = "translateX(0px)";

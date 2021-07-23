@@ -2,13 +2,11 @@ import requests
 import re
 
 
-# Command takes in the unformatter medicine name and returns a *DICTIONARY* of names and prices (which are lists)
 def get_medicines(query):
     if ' ' in query:
         query = query.replace(' ', '+')
-    print(f'https://pharmeasy.in/search/all?name={query}')
     content = requests.get(f'https://pharmeasy.in/search/all?name={query}').text
-
+    print(content)
     prices = re.findall(r'₹<!-- -->(\S{5})', content)
     names = []
     src = []
