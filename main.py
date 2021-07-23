@@ -26,6 +26,7 @@ def index():
             login = False
     except KeyError:
         session['login'] = False
+        login = session['login']
     return render_template('index.html', login=login)
 
 
