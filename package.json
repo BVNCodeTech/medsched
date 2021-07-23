@@ -9,6 +9,7 @@
     "postcss:build": "postcss static/styles.pcss -o static/styles.css",
     "prestart": "npm run postcss:build",
     "prebuild": "npm run postcss:build -- --env=production"
+    
   },
   "devDependencies": {
     "autoprefixer": "^10.3.1",
