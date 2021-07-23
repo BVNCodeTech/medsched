@@ -19,10 +19,13 @@ app.config['MAX_CONTENT_LENGTH'] = 20 * 1000 * 1000
 
 @app.route('/')
 def index():
-    if session['login']:
-        login = True
-    else:
-        login = False
+    try:
+        if session['login']:
+            login = True
+        else:
+            login = False
+    except KeyError:
+        session['login'] = False
     return render_template('index.html', login=login)
 
 
