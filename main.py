@@ -5,7 +5,7 @@ from werkzeug.utils import redirect, secure_filename
 import bcrypt
 from functions.users import check_existing_user, add_new_user, check_user_credentials
 from functions.scheduler import add_medicine
-import datetime
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = 'subhogay'
@@ -43,9 +43,12 @@ def signup_verify():
 
 @app.route('/login')
 def login():
-    if session['login']:
-        return redirect('/dashboard')
-    else:
+    try:
+        if session['login']:
+            return redirect('/dashboard')
+        else:
+            return render_template('login.html')
+    except:
         return render_template('login.html')
 
 
@@ -92,7 +95,29 @@ def add_schedule():
 @app.route('/schedule/submit', methods=['GET',"POST"])
 def submit_schedule():
     data = request.form
-    medicine = data['medicine-name']
+    data = data.copy()
+    dose_time = datetime.strptime(f"{data['hours']}:{data['minutes']} {data['halftime']}", '%I:%M %p')
+    schedule_data = {
+        'medicine_name':data['medicine-name'],
+        'dose_time':dose_time.strftime("%H:%M:%S"),
+        'start_date': datetime.strptime(data['start-date'].replace('-',''), '%Y%m%d'),
+        'end_date':datetime.strptime(data['end-date'].replace('-',''), '%Y%m%d')
+    }
+#datetime.strptime(f"{data['hours']}:{data['minutes']} {data['halftime']}", '%I:%M %p')
+    data['medicine-name']=None
+    data['hours'] = None
+    data['minutes'] = None
+    data['halftime'] = None
+    data['start-date'] = None
+    data['end-date'] = None
+
+    days = []
+    for key in data:
+        if data[key]:
+            days.append(key)
+    schedule_data['days'] = days
+    add_medicine(session['user'], schedule_data)
+    return redirect('/schedule')
 
 
 @app.route('/prescription')
