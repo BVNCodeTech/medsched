@@ -79,3 +79,8 @@ python main.py # For Windows
 ![screencast1](docs/screencast.png)
 The Dashboard
 
+![screencast2](docs/screencast_2.png)
+Adding A Reminder
+
+![screencast3](docs/screencast_3.png)
+Uploading prescriptions
