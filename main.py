@@ -10,11 +10,14 @@ from functions.medscraper import get_medicines
 from functions.prescription import allowed_file
 from datetime import datetime, timedelta
 import os
+import pytz
 
 app = Flask(__name__)
 app.secret_key = 'subhogay'
 app.config['UPLOAD_FOLDER'] = '/'
 app.config['MAX_CONTENT_LENGTH'] = 20 * 1000 * 1000
+
+IST = pytz.timezone('Asia/Kolkata')
 
 
 @app.route('/')
@@ -94,8 +97,8 @@ def logout():
 def dashboard():
     if session['user']:
         if not no_data_check(session['user']):
-            data = fetch_user_schedule(datetime.now(), session['user'])
-            now = str(datetime.now()).split('.')[0][-8:-3]
+            data = fetch_user_schedule(datetime.now(IST), session['user'])
+            now = str(datetime.now(IST)).split('.')[0][-8:-3]
             data['current_time'] = now
 
             upcoming = {}
@@ -148,7 +151,7 @@ def dashboard():
 
             count = 0
             tomorrow_card_html = ''
-            data = fetch_user_schedule(datetime.now() + timedelta(days=1), session['user'])
+            data = fetch_user_schedule(datetime.now(IST) + timedelta(days=1), session['user'])
             data = dict(sorted(data.items(), key=lambda item: item[1]))
             for medicine in data:
                 count +=1
@@ -157,7 +160,7 @@ def dashboard():
 
             count = 0
             day_after_card_html = ''
-            data = fetch_user_schedule(datetime.now() + timedelta(days=2), session['user'])
+            data = fetch_user_schedule(datetime.now(IST) + timedelta(days=2), session['user'])
             data = dict(sorted(data.items(), key=lambda item: item[1]))
             for medicine in data:
                 count += 1
@@ -181,8 +184,8 @@ def dashboard():
 @app.route('/schedule')
 def schedule():
     if session['user']:
-        data = fetch_user_schedule(datetime.now(), session['user'])
-        now = str(datetime.now()).split('.')[0][-8:-3]
+        data = fetch_user_schedule(datetime.now(IST), session['user'])
+        now = str(datetime.now(IST)).split('.')[0][-8:-3]
         data['current_time'] = now
 
         upcoming = {}

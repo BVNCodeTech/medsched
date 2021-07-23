@@ -1,8 +1,10 @@
 from pymongo import MongoClient
-from flask import session
 import json
-from datetime import datetime
-import calendar
+import pytz
+
+
+IST = pytz.timezone('Asia/Kolkata')
+
 
 client = MongoClient(
     'mongodb+srv://pancham:pancham@niggaballs.tjmtx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
@@ -10,8 +12,7 @@ db = client['medicine_schedule']
 scheduledb = db['schedule']
 
 
-# 5:20 AM
-# 27-7-2021
+
 def add_medicine(email, object: dict):
     document = scheduledb.find_one({'_id': email.lower()})
     medicine = object['medicine_name']
