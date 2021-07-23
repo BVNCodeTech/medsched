@@ -1,23 +1,29 @@
-from datetime import time
 from flask import Flask, flash, request, session
 from flask.templating import render_template
 from werkzeug.utils import redirect, secure_filename
 import bcrypt
 from functions.users import check_existing_user, add_new_user, check_user_credentials
-from functions.scheduler import add_medicine, fetch_user_schedule, card
+from functions.scheduler import add_medicine, fetch_user_schedule, card, no_data_check
 from functions.dashboard import user_name, today_card, tomorrow_card, day_after_card
 from functions.medicines import get_all_medicines, medicine_card
 from functions.medscraper import get_medicines
+from functions.prescription import allowed_file
 from datetime import datetime, timedelta
+import os
 
 app = Flask(__name__)
 app.secret_key = 'subhogay'
-app.config['UPLOAD_FOLDER'] = '/user_temporary_files'
+app.config['UPLOAD_FOLDER'] = '/'
+app.config['MAX_CONTENT_LENGTH'] = 20 * 1000 * 1000
 
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    if session['login']:
+        login = True
+    else:
+        login = False
+    return render_template('index.html', login=login)
 
 
 # Authentication
@@ -83,80 +89,87 @@ def logout():
 @app.route('/dashboard')
 def dashboard():
     if session['user']:
-        data = fetch_user_schedule(datetime.now(), session['user'])
-        now = str(datetime.now()).split('.')[0][-8:-3]
-        data['current_time'] = now
+        if not no_data_check(session['user']):
+            data = fetch_user_schedule(datetime.now(), session['user'])
+            now = str(datetime.now()).split('.')[0][-8:-3]
+            data['current_time'] = now
 
-        upcoming = {}
-        completed = {}
+            upcoming = {}
+            completed = {}
 
-        total_doses = 0
-        for item in data:
-            total_doses += 1
+            total_doses = 0
+            for item in data:
+                total_doses += 1
 
-        data = dict(sorted(data.items(), key=lambda item: item[1]))
+            data = dict(sorted(data.items(), key=lambda item: item[1]))
 
-        upcoming_count = 0
-        checkpoint = False
-        for medicine in data:
-            if medicine == 'current_time':
-                checkpoint = True
-            elif checkpoint:
-                upcoming_count += 1
-                upcoming[medicine] = data[medicine]
-            else:
-                completed[medicine] = data[medicine]
+            upcoming_count = 0
+            checkpoint = False
+            for medicine in data:
+                if medicine == 'current_time':
+                    checkpoint = True
+                elif checkpoint:
+                    upcoming_count += 1
+                    upcoming[medicine] = data[medicine]
+                else:
+                    completed[medicine] = data[medicine]
 
-        today_card_html = ''
-        for medicine in upcoming:
-            today_card_html += today_card(medicine, upcoming[medicine])
+            today_card_html = ''
+            for medicine in upcoming:
+                today_card_html += today_card(medicine, upcoming[medicine])
 
-        first = 0
-        for medicine in upcoming:
-            first += 1
-            if first < 2:
-                first_medicine = medicine
-                first_medicine_time = upcoming[medicine]
+            first = 0
+            for medicine in upcoming:
+                first += 1
+                if first < 2:
+                    first_medicine = medicine
+                    first_medicine_time = upcoming[medicine]
 
+                card1 = f"""<div class="md:p-7 p-4">
+                        <h2 class=" text-xl text-center text-primary-green-dark capitalize">Next Dose</h2>
+                        <h3 class="text-sm  text-primary-green-dark  text-center">{first_medicine_time} - {first_medicine}</h3>
+                      </div>"""
+
+                card2 = f"""<div class="md:p-7 p-4">
+                        <h2 class="text-xl text-center text-primary-blue-dark capitalize">Today</h2>
+                        <h3 class="text-sm  text-primary-blue-dark  text-center">{total_doses} doses</h3>
+                      </div>"""
+
+                card3 = f"""<div class="md:p-7 p-4">
+                        <h2 class="text-lg text-center text-primary-yellow-dark capitalize">
+                          <span>{first_medicine}</span>
+                        </h2>
+                        <h3 class="text-sm  text-primary-yellow-dark  text-center">{first_medicine_time}</h3>
+                      </div>"""
+
+            count = 0
+            tomorrow_card_html = ''
+            data = fetch_user_schedule(datetime.now() + timedelta(days=1), session['user'])
+            data = dict(sorted(data.items(), key=lambda item: item[1]))
+            for medicine in data:
+                count +=1
+                if count < 4:
+                    tomorrow_card_html += tomorrow_card(medicine, data[medicine])
+
+            count = 0
+            day_after_card_html = ''
+            data = fetch_user_schedule(datetime.now() + timedelta(days=2), session['user'])
+            data = dict(sorted(data.items(), key=lambda item: item[1]))
+            for medicine in data:
+                count += 1
+                if count < 4:
+                    day_after_card_html += day_after_card(medicine, data[medicine])
+            session['upcoming_count'] = upcoming_count
+
+            return render_template('app/dashboard.html', name=user_name(session['user']).title(), card1=card1, card2=card2,
+                                   card3=card3, upcoming_count=upcoming_count, today_card_html=today_card_html,
+                                   tomorrow_card_html=tomorrow_card_html, day_after_card_html=day_after_card_html)
+        else:
             card1 = f"""<div class="md:p-7 p-4">
-                    <h2 class=" text-xl text-center text-primary-green-dark capitalize">Next Dose</h2>
-                    <h3 class="text-sm  text-primary-green-dark  text-center">{first_medicine_time} - {first_medicine}</h3>
-                  </div>"""
+                                    <h2 class=" text-xl text-center text-primary-green-dark capitalize">Add some data from scheduler</h2>
+                                  </div>"""
 
-            card2 = f"""<div class="md:p-7 p-4">
-                    <h2 class="text-xl text-center text-primary-blue-dark capitalize">Today</h2>
-                    <h3 class="text-sm  text-primary-blue-dark  text-center">{total_doses} doses</h3>
-                  </div>"""
-
-            card3 = f"""<div class="md:p-7 p-4">
-                    <h2 class="text-lg text-center text-primary-yellow-dark capitalize">
-                      <span>{first_medicine}</span>
-                    </h2>
-                    <h3 class="text-sm  text-primary-yellow-dark  text-center">{first_medicine_time}</h3>
-                  </div>"""
-
-        count = 0
-        tomorrow_card_html = ''
-        data = fetch_user_schedule(datetime.now() + timedelta(days=1), session['user'])
-        data = dict(sorted(data.items(), key=lambda item: item[1]))
-        for medicine in data:
-            count +=1
-            if count < 4:
-                tomorrow_card_html += tomorrow_card(medicine, data[medicine])
-
-        count = 0
-        day_after_card_html = ''
-        data = fetch_user_schedule(datetime.now() + timedelta(days=2), session['user'])
-        data = dict(sorted(data.items(), key=lambda item: item[1]))
-        for medicine in data:
-            count += 1
-            if count < 4:
-                day_after_card_html += day_after_card(medicine, data[medicine])
-        session['upcoming_count'] = upcoming_count
-
-        return render_template('app/dashboard.html', name=user_name(session['user']).title(), card1=card1, card2=card2,
-                               card3=card3, upcoming_count=upcoming_count, today_card_html=today_card_html,
-                               tomorrow_card_html=tomorrow_card_html, day_after_card_html=day_after_card_html)
+            return render_template('app/dashboard.html', name=user_name(session['user']).title(), card1=card1, upcoming_count=0)
     else:
         return redirect('/login')
 
@@ -240,7 +253,7 @@ def submit_schedule():
 
 @app.route('/prescription')
 def prescription_view():
-    pass
+    return render_template('app/prescriptions.html')
 
 
 @app.route('/prescription/add')
@@ -250,11 +263,16 @@ def add_prescription():
 
 @app.route('/prescription/submit', methods=['GET', 'POST'])
 def submit_prescription():
-    data = request.form
-    print(data)
-    prescription_title = data.get('prescription-name')
-    file = request.files['file']
-    file.save(secure_filename(file.filename))
+    if request.method == 'POST':
+        if 'file' not in request.files:
+            return redirect(request.url)
+        file = request.files['file']
+        if file.filename == '':
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            return redirect('/prescriptions')
 
 
 @app.route('/medicines')
@@ -289,6 +307,21 @@ def medicines():
 @app.route('/settings')
 def settings():
     return render_template('app/settings.html')
+
+
+@app.errorhandler(404)
+def error(error):
+    return 'Error 404'
+
+
+@app.errorhandler(500)
+def error(error):
+    return 'Error 500'
+
+
+@app.errorhandler(502)
+def error(error):
+    return render_template('error502.html')
 
 
 if __name__ == '__main__':

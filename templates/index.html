@@ -44,7 +44,12 @@
         <h1>medSched</h1>
         <p class="lead">An all-in-one application for all of your medical needs.</p>
         <p class="lead">
+          {% if login %}
+          <a href="/dashboard" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Learn more</a>
+          {% endif %}
+          {% if not login %}
           <a href="/signup" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Learn more</a>
+          {% endif %}
         </p>
       </main>
       <br><br><br><br><br><br><br>

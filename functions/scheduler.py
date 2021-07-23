@@ -46,6 +46,15 @@ def fetch_user_schedule(day, user=None):
     return today_meds
 
 
+def no_data_check(user):
+    document = scheduledb.find_one({"_id":user.lower()})
+    medicines = document['medicines']
+    if not medicines:
+        return True
+    else:
+        return False
+
+
 def card(medicine:str, time):
     card_html = f"""<div class="flex flex-col card rounded-lg my-5 p-3 shadow-md">
                   <p class="text-gray-800 my-3">{medicine.title()}</p>

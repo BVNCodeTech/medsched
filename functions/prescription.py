@@ -1,5 +1,12 @@
 from flask import session, flash
 import owncloud
+from pymongo import MongoClient
+
+
+def allowed_file(filename):
+    ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg'}
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 def connect():
@@ -11,7 +18,7 @@ def connect():
         pass
 
 def add_prescription():
-
+    pass
 
 
 

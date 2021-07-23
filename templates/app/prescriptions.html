@@ -5,12 +5,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>medSCHED - Prescription</title>
+    <title>medSCHED - Prescriptions</title>
     <!-- Styles -->
     <link rel="stylesheet" href="static/styles.css" />
     <!-- For plain html -->
     <link rel="stylesheet" href="../../static/styles.css" />
-    <link rel="stylesheet" href="../../static/form.css" />
   </head>
   <body>
     <div class="flex flex-no-wrap">
@@ -28,14 +27,14 @@
                 <span class="text-sm ml-2">Dashboard</span>
                 </a>
                 <!-- Do not show the badge if the number of medications to be taken today = 0 -->
-                <div class="py-1 px-3 bg-white rounded text-primary-blue-light flex items-center justify-center text-xs">3</div>
+<!--                <div class="py-1 px-3 bg-white rounded text-primary-blue-light flex items-center justify-center text-xs">3</div>-->
               </li>
               <li class="flex w-full justify-between text-white cursor-pointer items-center mb-6">
                 <a href="/schedule" class="flex items-center focus:outline-none focus:ring-2 focus:ring-white">
                 <object type="image/svg+xml" data="../../static/svg/plugin.svg"></object>
                 <span class="text-sm ml-2">Schedule</span>
                 </a>
-                <div class="py-1 px-3 bg-white rounded text-primary-blue-light flex items-center justify-center text-xs">8</div>
+                <div class="py-1 px-3 bg-white rounded text-primary-blue-light flex items-center justify-center text-xs">{{ upcoming_count }}</div>
               </li>
               <li class="flex w-full justify-between text-gray-400 hover:text-gray-300 cursor-pointer items-center mb-6">
                 <a href="/medicines" class="flex items-center focus:outline-none focus:ring-2 focus:ring-white">
@@ -49,7 +48,6 @@
                 <span class="text-sm ml-2">Prescription</span>
                 </a>
               </li>
-
               <li class="flex w-full justify-between text-gray-400 hover:text-gray-300 cursor-pointer items-center">
                 <a href="/login" class="flex items-center focus:outline-none focus:ring-2 focus:ring-white">
                 <object type="image/svg+xml" data="../../static/svg/settings-inactive.svg"></object>
@@ -137,12 +135,6 @@
               <span class="text-sm ml-2">Prescription</span>
               </a>
             </li>
-            <li class="flex w-full justify-between text-gray-400 hover:text-gray-300 cursor-pointer items-center mb-6">
-              <a href="/generic" class="flex items-center focus:outline-none focus:ring-2 focus:ring-white">
-              <object ype="image/svg+xml" data="../../static/svg/stack-inactive.svg"></object>
-              <span class="text-sm ml-2">Inventory</span>
-              </a>
-            </li>
             <li class="flex w-full justify-between text-gray-400 hover:text-gray-300 cursor-pointer items-center">
               <a href="/login" class="flex items-center focus:outline-none focus:ring-2 focus:ring-white">
               <object type="image/svg+xml" data="../../static/svg/settings-inactive.svg"></object>
@@ -179,75 +171,51 @@
       </div>
       <!-- Sidebar ends -->
       <!-- Container Start -->
-      <div class="sm:ml-64  w-full bg-gray-50">
+      <div class="sm:ml-64  w-full">
         <div class="container mx-auto h-64 md:w-4/5 w-full px-4 flex flex-col flex-no-wrap">
-          <div class="flex flex-col my-9 w-full">
-            <button class="self-start" onclick="goBack()">
-              <p class="text-sm text-gray-700 dark:text-gray-200">
-                <i  class="fas fa-arrow-left"></i>  Go Back
-              </p>
-            </button>
-            <div class="flex">
-              <p class="text-3xl font-semibold my-3 dark:text-white">Add A Prescription</p>
-            </div>
-            <!-- Form start  -->
-            <form action="/prescription/submit" method="post" enctype = "multipart/form-data">
-              <div class="shadow sm:rounded-md sm:overflow-hidden">
-                <div class="px-4 py-5 bg-white space-y-6 sm:p-6">
-                  <div class="flex flex-col">
-                    <label for="prescription-name" class="block text-sm font-medium text-gray-700">
-                    Prescription Name
-                    </label>
-                    <div class="mt-1 w-full flex rounded-md shadow-sm rounded-l-md border border-r-0 border-gray-300">
-                      <input type="text" name="prescription-name" id="prescription-name" class="focus:ring-indigo-500 focus:border-indigo-500 flex-1 block w-full rounded-md sm:text-sm " placeholder="Penicillin">
-                    </div>
-                    <div class="mt-3">
-                      <input type="file" name="file", id="file">
-                      <label class="block text-sm font-medium text-gray-700">
-                        Prescription File
-                      </label>
-                      <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
-                        <div class="space-y-1 text-center">
-                          <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48" aria-hidden="true">
-                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                          </svg>
-                          <div class="flex text-sm text-gray-600">
-                            <label for="file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
-                              <span>Upload a file</span>
-                              <input id="file-upload" name="file-upload" type="file" class="sr-only">
-                            </label>
-                            <p class="pl-1">or drag and drop</p>
-                          </div>
-                          <p class="text-xs text-gray-500">
-                            PNG, JPG, PDF up to 20MB
-                          </p>
-                        </div>
-                      </div>
-                    </div>
+          <div class="flex flex-col my-9">
+            <p class="text-3xl font-semibold my-7 dark:text-white">Prescriptions</p>
+            <p class="text-sm text-gray-700 dark:text-gray-200">
+              Click <span class="bg-gray-200 text-primary-blue-light">+</span> at the bootom right to store your prescriptions with us. Powered by CodeTech Drive.
 
-                  </div>
-                  <div class="px-4 py-3  text-right sm:px-6">
-                    <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                    >
-                    Save Changes
-                    </button>
-                  </div>
+            </p>
+          </div>
+          <!-- Columns  -->
+          <div class="flex flex-wrap w-full flex-col lg:flex-row">
+            <!-- Column 1 (Next Up)-->
+            <div class="my-2 mx-2 flex-1 flex flex-col">
+              <!-- Column Header  -->
+              <div class="flex rounded-md bg-gray-200 p-2">
+                <p class="text-gray-900 font-semibold">Your prescriptions</p>
+                <div class="flex-grow"></div>
+                <!-- Spacer -->
+                <div class="py-1 px-3 bg-gray-800 rounded text-white flex items-center justify-center text-xs">{{ total }}</div>
               </div>
-              <br><br>
-            </form>
+              <!-- Column Cards  -->
+              <div class="flex-col flex md:flex-row lg:flex-col">
+              {{ prescription_card_html|safe }}
+              </div>
+            </div>
+            <!-- Column 2 (Completed)-->
           </div>
         </div>
       </div>
       <!-- Container End -->
+      <a href="/prescription/add">
+        <button
+          class="fixed bottom-3 right-3 p-0 w-16 h-16 bg-primary-blue-light rounded-full hover:bg-blue-700 active:shadow-lg mouse shadow transition ease-in duration-200 focus:outline-none">
+          <svg viewBox="0 0 20 20" enable-background="new 0 0 20 20" class="w-6 h-6 inline-block">
+            <path fill="#FFFFFF" d="M16,10c0,0.553-0.048,1-0.601,1H11v4.399C11,15.951,10.553,16,10,16c-0.553,0-1-0.049-1-0.601V11H4.601
+              C4.049,11,4,10.553,4,10c0-0.553,0.049-1,0.601-1H9V4.601C9,4.048,9.447,4,10,4c0.553,0,1,0.048,1,0.601V9h4.399
+              C15.952,9,16,9.447,16,10z" />
+      </a>
+      </svg>
+      </button>
     </div>
     <script defer src="../../static/@fortawesome/fontawesome-free/js/brands.js"></script>
     <script defer src="../../static/@fortawesome/fontawesome-free/js/solid.js"></script>
     <script defer src="../../static/@fortawesome/fontawesome-free/js/fontawesome.js"></script>
     <script>
-      function goBack() {
-        window.history.back();
-      }
-
       var sideBar = document.getElementById("mobile-nav");
       var toggler = document.getElementById("mobile-toggler");
       sideBar.style.transform = "translateX(-260px)";

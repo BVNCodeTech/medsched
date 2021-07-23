@@ -7,6 +7,7 @@ client = MongoClient(
 db = client['medicine_schedule']
 user_collection = db['users']
 schedules = db['schedule']
+prescriptions = db['prescriptions']
 
 
 def check_existing_user(email):
@@ -23,8 +24,12 @@ def add_new_user(name, email, password):
         'password': password
     })
     schedules.insert_one({
-        '_id':email,
+        '_id':email.lower(),
         'medicines':{}
+    })
+    prescriptions.insert_one({
+        '_id':email.lower(),
+        'prescription':{}
     })
 
 
