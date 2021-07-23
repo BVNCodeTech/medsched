@@ -30,6 +30,8 @@
 
         "@fortawesome/fontawesome-free": "^5.15.3",
 
+        "@tailwindcss/forms": "^0.3.3",
+
         "postcss-cli": "^8.3.1"
 
     }
