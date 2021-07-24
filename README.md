@@ -29,7 +29,7 @@ cd medsched
 
 ### Installing Virtual Environment
 
-Be sure to have python >=3.8 installed in your machine and added to `$PATH` for *nix and to `environment variables` in Windows. Next create a virtual environment by installing and using `virtualenv`
+Be sure to have python >=3.6 installed in your machine and added to `$PATH` for *nix and to `environment variables` in Windows. Next create a virtual environment by installing and using `virtualenv`
 
 ```
 pip install virtualenv
