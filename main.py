@@ -8,13 +8,15 @@ from functions.dashboard import user_name, today_card, tomorrow_card, day_after_
 from functions.medicines import get_all_medicines, medicine_card
 from functions.medscraper import get_medicines
 from functions.prescription import allowed_file
+from functions.uploader import upload
 from datetime import datetime, timedelta
 import os
 import pytz
 
+
 app = Flask(__name__)
 app.secret_key = 'subhogay'
-app.config['UPLOAD_FOLDER'] = '/'
+app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['MAX_CONTENT_LENGTH'] = 20 * 1000 * 1000
 
 # IST = pytz.timezone('Asia/Kolkata')
@@ -285,8 +287,19 @@ def prescription_view():
     return render_template('app/prescriptions.html')
 
 
-@app.route('/prescription/add')
+@app.route('/prescription/add', methods=["GET", "POST"])
 def add_prescription():
+    if request.method == 'POST':
+        data = request.form
+        prescription_title = data.get('prescription-name')
+        file = request.files['file']
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        path = f"{app.config['UPLOAD_FOLDER']}/{filename}"
+        print(f'PATH ===> {path}')
+        check = upload(path,session['user'], f'{filename}')
+        if check:
+            flash('prescription added')
     try:
         upcoming_count = session['upcoming_count']
         return render_template('app/add-prescription.html', upcoming_count=upcoming_count)
@@ -294,18 +307,7 @@ def add_prescription():
         return render_template('app/add-prescription.html')
 
 
-@app.route('/prescription/submit', methods=['GET', 'POST'])
-def submit_prescription():
-    if request.method == 'POST':
-        if 'file' not in request.files:
-            return redirect(request.url)
-        file = request.files['file']
-        if file.filename == '':
-            return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            return redirect('/prescriptions')
+
 
 
 @app.route('/medicines')
