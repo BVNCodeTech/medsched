@@ -103,13 +103,11 @@ def dashboard():
             upcoming = {}
             completed = {}
 
-            total_doses = 0
-            for item in data:
-                total_doses += 1
 
             data = dict(sorted(data.items(), key=lambda item: item[1]))
 
             upcoming_count = 0
+            completed_count = 0
             checkpoint = False
             for medicine in data:
                 if medicine == 'current_time':
@@ -118,6 +116,7 @@ def dashboard():
                     upcoming_count += 1
                     upcoming[medicine] = data[medicine]
                 else:
+                    completed_count += 1
                     completed[medicine] = data[medicine]
 
             today_card_html = ''
@@ -138,7 +137,7 @@ def dashboard():
 
                 card2 = f"""<div class="md:p-7 p-4">
                         <h2 class="text-xl text-center text-primary-blue-dark capitalize">Today</h2>
-                        <h3 class="text-sm  text-primary-blue-dark  text-center">{total_doses} doses</h3>
+                        <h3 class="text-sm  text-primary-blue-dark  text-center">{upcoming_count+completed_count} doses</h3>
                       </div>"""
 
                 card3 = f"""<div class="md:p-7 p-4">
@@ -173,7 +172,7 @@ def dashboard():
                                   </div>"""
                 card2 = f"""<div class="md:p-7 p-4">
                                         <h2 class="text-xl text-center text-primary-blue-dark capitalize">Today</h2>
-                                        <h3 class="text-sm  text-primary-blue-dark  text-center">{total_doses} doses</h3>
+                                        <h3 class="text-sm  text-primary-blue-dark  text-center">{upcoming_count+completed_count} doses</h3>
                                       </div>"""
                 return render_template('app/dashboard.html', name=user_name(session['user']).title(), card1=card1,
                                        card2=card2, upcoming_count=upcoming_count, today_card_html=today_card_html,
@@ -226,7 +225,7 @@ def schedule():
         for medicine in completed:
             completed_count += 1
             completed_card_html += card(medicine.title(), completed[medicine])
-
+        session['upcoming_count'] = upcoming_count
         return render_template('app/schedule.html', completed_card_html=completed_card_html,
                                upcoming_card_html=upcoming_card_html, upcoming_count=upcoming_count,
                                completed_count=completed_count)
@@ -324,24 +323,19 @@ def medicines():
         return redirect('/login')
 
 
-@app.route('/settings')
-def settings():
-    return render_template('app/settings.html')
-
-
 @app.errorhandler(404)
 def error(error):
-    return 'Error 404'
+    return '<h1>Error 404</h1>'
 
 
 @app.errorhandler(500)
 def error(error):
-    return 'Error 500'
+    return '<h1>Error 500</h1>'
 
 
 @app.errorhandler(502)
 def error(error):
-    return render_template('error502.html')
+    return '<h1>error502</h1>'
 
 
 if __name__ == '__main__':
