@@ -1,25 +1,24 @@
 import requests
 import re
+from bs4 import BeautifulSoup
 
 
 def get_medicines(query):
     if ' ' in query:
         query = query.replace(' ', '+')
     content = requests.get(f'https://pharmeasy.in/search/all?name={query}').text
-    prices = re.findall(r'₹<!-- -->(\S{5})', content)
+    soup = BeautifulSoup(content, 'html.parser')
+
     names = []
-    src = []
-    for i in range(content.count('<h1 class="ooufh">')):
-        index = content.index('<h1 class="ooufh">')
-        try:
-            src_index = content.index('alt="medicine" src="')
-            link = content[src_index:src_index+100].split('"')
-            src.append(link[2])
-        except:
-            pass # THEY FUCKING IP BLOCKED ME - NL
-        name = content[index:index+50].split('<')
-        names.append(name[1].split('>')[1])
-        content = content[index+18:]
+    for h1 in soup.find_all('h1', class_='ooufh'):
+        first = str(h1)[18:]
+        names.append(first[:-5])
 
-    return {"names":names, "prices":prices, "image links":src}
+    prices = re.findall(r'₹<!-- -->(\S{5})', content)
 
+    links = []
+    for a_tag in soup.find_all('a' ,href=True):
+        if a_tag['href'].find('/online-medicine-order/') != -1 or a_tag['href'].find('/health-care-products/') != -1:
+            links.append(f"https://pharmeasy.in{a_tag['href']}")
+
+    return {'names':names, 'prices':prices, 'order links':links}

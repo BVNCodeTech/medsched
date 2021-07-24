@@ -16,14 +16,15 @@ def get_all_medicines(user):
     return list
 
 
-def medicine_card(medicine, price):
+def medicine_card(medicine, price, href):
     card = f"""<div class="flex flex-col card rounded-lg my-5 p-3 shadow-md">
                   <p class="text-gray-800 my-3">{medicine.title()}</p>
                   <div class="flex">
+                  <a href='{href}' target='_blank'>
                     <button class="bg-primary-blue-light text-white p-1 rounded-lg flex">
                       <i class="fas fa-external-link-alt mt-1.5 mx-1"></i>
                       <p class="mt-1 font-medium">₹{price} | Buy now</p>
-                    </button>
+                    </button></a>
                   </div>
                 </div>"""
     return card

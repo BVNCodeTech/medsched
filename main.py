@@ -324,7 +324,7 @@ def medicines():
                         count += 1
                         if count < 3:
                             total += 1
-                            medicine_card_html += medicine_card(results['names'][index], results['prices'][index])
+                            medicine_card_html += medicine_card(results['names'][index], results['prices'][index], results['order links'][index])
 
             try:
                 upcoming_count = session['upcoming_count']
