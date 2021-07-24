@@ -7,19 +7,14 @@ from functions.scheduler import add_medicine, fetch_user_schedule, card, no_data
 from functions.dashboard import user_name, today_card, tomorrow_card, day_after_card
 from functions.medicines import get_all_medicines, medicine_card
 from functions.medscraper import get_medicines
-from functions.prescription import allowed_file
-from functions.uploader import upload
+from functions.prescription import add_prescription, add_prescription_record, fetch_prescriptions, prescription_card
 from datetime import datetime, timedelta
 import os
-import pytz
-
 
 app = Flask(__name__)
 app.secret_key = 'subhogay'
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['MAX_CONTENT_LENGTH'] = 20 * 1000 * 1000
-
-# IST = pytz.timezone('Asia/Kolkata')
 
 
 @app.route('/')
@@ -106,7 +101,6 @@ def dashboard():
                 upcoming = {}
                 completed = {}
 
-
                 data = dict(sorted(data.items(), key=lambda item: item[1]))
 
                 upcoming_count = 0
@@ -140,7 +134,7 @@ def dashboard():
 
                     card2 = f"""<div class="md:p-7 p-4">
                             <h2 class="text-xl text-center text-primary-blue-dark capitalize">Today</h2>
-                            <h3 class="text-sm  text-primary-blue-dark  text-center">{upcoming_count+completed_count} doses</h3>
+                            <h3 class="text-sm  text-primary-blue-dark  text-center">{upcoming_count + completed_count} doses</h3>
                           </div>"""
 
                     card3 = f"""<div class="md:p-7 p-4">
@@ -175,16 +169,18 @@ def dashboard():
                                       </div>"""
                     card2 = f"""<div class="md:p-7 p-4">
                                             <h2 class="text-xl text-center text-primary-blue-dark capitalize">Today</h2>
-                                            <h3 class="text-sm  text-primary-blue-dark  text-center">{upcoming_count+completed_count} doses</h3>
+                                            <h3 class="text-sm  text-primary-blue-dark  text-center">{upcoming_count + completed_count} doses</h3>
                                           </div>"""
                     return render_template('app/dashboard.html', name=user_name(session['user']).title(), card1=card1,
                                            card2=card2, upcoming_count=upcoming_count, today_card_html=today_card_html,
-                                           tomorrow_card_html=tomorrow_card_html, day_after_card_html=day_after_card_html)
+                                           tomorrow_card_html=tomorrow_card_html,
+                                           day_after_card_html=day_after_card_html)
                 else:
                     return render_template('app/dashboard.html', name=user_name(session['user']).title(), card1=card1,
                                            card2=card2,
                                            card3=card3, upcoming_count=upcoming_count, today_card_html=today_card_html,
-                                           tomorrow_card_html=tomorrow_card_html, day_after_card_html=day_after_card_html)
+                                           tomorrow_card_html=tomorrow_card_html,
+                                           day_after_card_html=day_after_card_html)
             else:
                 card1 = f"""<div class="md:p-7 p-4">
                                         <h2 class=" text-xl text-center text-primary-green-dark capitalize">Add some data from scheduler</h2>
@@ -243,11 +239,14 @@ def schedule():
 
 @app.route('/schedule/add', methods=["GET", "POST"])
 def add_schedule():
-    try:
-        upcoming_count = session['upcoming_count']
-        return render_template('app/add-medicine.html', upcoming_count=upcoming_count)
-    except KeyError:
-        return render_template('app/add-medicine.html')
+    if session['user']:
+        try:
+            upcoming_count = session['upcoming_count']
+            return render_template('app/add-medicine.html', upcoming_count=upcoming_count)
+        except KeyError:
+            return render_template('app/add-medicine.html')
+    else:
+        return redirect('/login')
 
 
 @app.route('/schedule/submit', methods=['GET', "POST"])
@@ -284,30 +283,46 @@ def submit_schedule():
 
 @app.route('/prescription')
 def prescription_view():
-    return render_template('app/prescriptions.html')
+    if session['user']:
+        data, count = fetch_prescriptions(session['user'])
+        prescription_card_html = ''
+        for index in range(len(data)):
+            prescription_card_html += prescription_card(data[index]['name'], data[index]['link'])
+        try:
+            upcoming_count = session['upcoming_count']
+            return render_template('app/prescriptions.html', upcoming_count=upcoming_count, total=count,
+                                   prescription_card_html=prescription_card_html)
+        except KeyError:
+            return render_template('app/prescriptions.html', total=count, prescription_card_html=prescription_card_html)
+    else:
+        return redirect('/login')
 
 
-@app.route('/prescription/add', methods=["GET", "POST"])
-def add_prescription():
+@app.route('/prescription/add', methods=["GET", "POST",'PUT'])
+def add_prescription_page():
     if request.method == 'POST':
-        data = request.form
-        prescription_title = data.get('prescription-name')
-        file = request.files['file']
-        filename = secure_filename(file.filename)
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        path = f"{app.config['UPLOAD_FOLDER']}/{filename}"
-        print(f'PATH ===> {path}')
-        check = upload(path,session['user'], f'{filename}')
-        if check:
-            flash('prescription added')
+        try:
+            data = request.form
+            prescription_title = data.get('prescription-name')
+            file = request.files['file']
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            path = f"{app.config['UPLOAD_FOLDER']}/{filename}"
+            session['filename'] = path
+            link = add_prescription(path, session['user'], filename)
+            add_prescription_record(session['user'], prescription_title.title(), link)
+            return redirect('/prescription')
+        except:
+            try:
+                os.remove(session['filename'])
+            except KeyError:
+                pass
+            return redirect('/prescription/add')
     try:
         upcoming_count = session['upcoming_count']
         return render_template('app/add-prescription.html', upcoming_count=upcoming_count)
     except KeyError:
         return render_template('app/add-prescription.html')
-
-
-
 
 
 @app.route('/medicines')
@@ -326,7 +341,8 @@ def medicines():
                         count += 1
                         if count < 3:
                             total += 1
-                            medicine_card_html += medicine_card(results['names'][index], results['prices'][index], results['order links'][index])
+                            medicine_card_html += medicine_card(results['names'][index], results['prices'][index],
+                                                                results['order links'][index])
 
             try:
                 upcoming_count = session['upcoming_count']

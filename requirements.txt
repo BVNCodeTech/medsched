@@ -18,7 +18,7 @@ Jinja2==3.0.1
 MarkupSafe==2.0.1
 pycparser==2.20
 pymongo==3.12.0
-pyocclient==0.6
+pyocclient==0.4
 pytz==2021.1
 requests==2.26.0
 six==1.16.0
