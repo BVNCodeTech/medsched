@@ -92,7 +92,6 @@ def logout():
     return redirect('/login')
 
 
-# App Views
 @app.route('/dashboard')
 def dashboard():
     if session['user']:
