@@ -241,7 +241,11 @@ def schedule():
 
 @app.route('/schedule/add', methods=["GET", "POST"])
 def add_schedule():
-    return render_template('app/add-medicine.html')
+    try:
+        upcoming_count = session['upcoming_count']
+        return render_template('app/add-medicine.html', upcoming_count=upcoming_count)
+    except KeyError:
+        return render_template('app/add-medicine.html')
 
 
 @app.route('/schedule/submit', methods=['GET', "POST"])
@@ -283,7 +287,11 @@ def prescription_view():
 
 @app.route('/prescription/add')
 def add_prescription():
-    return render_template('app/add-prescription.html')
+    try:
+        upcoming_count = session['upcoming_count']
+        return render_template('app/add-prescription.html', upcoming_count=upcoming_count)
+    except KeyError:
+        return render_template('app/add-prescription.html')
 
 
 @app.route('/prescription/submit', methods=['GET', 'POST'])
