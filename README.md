@@ -88,4 +88,4 @@ Uploading prescriptions
 ## Broken Pages/Links - TO BE FIXED
 - Prescription upload page
 - Medicine buy links
-
+- Date input on Safari is glitched
