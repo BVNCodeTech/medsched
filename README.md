@@ -85,7 +85,6 @@ Adding A Reminder
 ![screencast3](docs/screencast_3.png)
 Uploading prescriptions
 
-## Broken Pages/Links - TO BE FIXED
-- Prescription upload page
-- Medicine buy links
-- Date input on Safari is glitched
+# Contributing 
+
+Please check CONTRIBUTING.md for relevent information
