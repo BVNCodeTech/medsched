@@ -1,4 +1,5 @@
 import owncloud
+import os 
 
 oc = owncloud.Client('https://drive.teamcodetech.in/')
 
@@ -15,4 +16,5 @@ def upload(path, user, filename):
         pass
     print('directory made')
     oc.put_file(f'{user}/{filename}', f'{path}')
-    print('process complete')
+    os.remove(path)
+    return True
