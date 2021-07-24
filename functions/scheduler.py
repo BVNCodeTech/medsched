@@ -12,7 +12,6 @@ db = client['medicine_schedule']
 scheduledb = db['schedule']
 
 
-
 def add_medicine(email, object: dict):
     document = scheduledb.find_one({'_id': email.lower()})
     medicine = object['medicine_name']
@@ -67,4 +66,3 @@ def card(medicine:str, time):
                   </div>
                 </div>"""
     return card_html
-# WILL MAKE FUNCS TO EDIT OTHER PARAMETERS WHEN THEY ARE FINALISED AS DATETIME OBJECTS

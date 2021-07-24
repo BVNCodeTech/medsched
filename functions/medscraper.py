@@ -14,7 +14,9 @@ def get_medicines(query):
         first = str(h1)[18:]
         names.append(first[:-5])
 
-    prices = re.findall(r'₹<!-- -->(\S{5})', content)
+    prices = []
+    for div in soup.find_all('div', class_='_1_yM9'):
+        prices.append(str(div)[29:][:-7])
 
     links = []
     for a_tag in soup.find_all('a' ,href=True):
