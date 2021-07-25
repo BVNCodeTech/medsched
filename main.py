@@ -163,7 +163,7 @@ def dashboard():
                         day_after_card_html += day_after_card(medicine, data[medicine])
                 session['upcoming_count'] = upcoming_count
 
-                if not upcoming:
+                if not upcoming and not completed:
                     card1 = f"""<div class="md:p-7 p-4">
                                         <h2 class=" text-xl text-center text-primary-green-dark capitalize">Add some data from scheduler</h2>
                                       </div>"""
@@ -173,6 +173,16 @@ def dashboard():
                                           </div>"""
                     return render_template('app/dashboard.html', name=user_name(session['user']).title(), card1=card1,
                                            card2=card2, upcoming_count=upcoming_count, today_card_html=today_card_html,
+                                           tomorrow_card_html=tomorrow_card_html,
+                                           day_after_card_html=day_after_card_html)
+                elif not upcoming:
+                    card2 = f"""<div class="md:p-7 p-4">
+                                            <h2 class="text-xl text-center text-primary-blue-dark capitalize">Today</h2>
+                                            <h3 class="text-sm  text-primary-blue-dark  text-center">{upcoming_count + completed_count} doses</h3>
+                                          </div>"""
+                    return render_template('app/dashboard.html', name=user_name(session['user']).title(),
+                                           card2=card2, upcoming_count=upcoming_count,
+                                           today_card_html=today_card_html,
                                            tomorrow_card_html=tomorrow_card_html,
                                            day_after_card_html=day_after_card_html)
                 else:
@@ -341,9 +351,11 @@ def medicines():
                         count += 1
                         if count < 3:
                             total += 1
-                            medicine_card_html += medicine_card(results['names'][index], results['prices'][index],
-                                                                results['order links'][index])
-
+                            try:
+                                medicine_card_html += medicine_card(results['names'][index], results['prices'][index],
+                                                                    results['order links'][index])
+                            except IndexError:
+                                pass
             try:
                 upcoming_count = session['upcoming_count']
                 return render_template('app/medicines.html', medicine_card_html=medicine_card_html, total=total,
