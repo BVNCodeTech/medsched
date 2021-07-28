@@ -8,10 +8,10 @@ client = MongoClient(
 db = client['medicine_schedule']
 prescriptiondb = db['prescriptions']
 
-oc = owncloud.Client('https://drive.teamcodetech.in/')
-EMAIL_ADDRESS = 'pancham@teamcodetech.in'
-PASSWORD = ''
-oc.login(EMAIL_ADDRESS, PASSWORD)
+# oc = owncloud.Client('https://drive.teamcodetech.in/')
+# EMAIL_ADDRESS = 'pancham@teamcodetech.in'
+# PASSWORD = ''
+# oc.login(EMAIL_ADDRESS, PASSWORD)
 
 
 def add_prescription(path=None, user=None, filename=None):

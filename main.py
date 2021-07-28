@@ -8,9 +8,9 @@ from functions.dashboard import user_name, today_card, tomorrow_card, day_after_
 from functions.medicines import get_all_medicines, medicine_card
 from functions.medscraper import get_medicines
 from functions.prescription import add_prescription, add_prescription_record, fetch_prescriptions, prescription_card
+from functions.notifications import *
 from datetime import datetime, timedelta
 import os
-from threading import Thread
 
 app = Flask(__name__)
 app.secret_key = 'subhogay'
@@ -43,11 +43,13 @@ def signup_verify():
         data = request.form
         name = data['name']
         email = data['email']
+        contact = data['contact']
+        emergency_contact = data['emergency_contact']
         password = data['password'].encode()
         hashed = bcrypt.hashpw(password, bcrypt.gensalt())
 
         if not check_existing_user(email):
-            add_new_user(name, email, hashed)
+            add_new_user(name, email, hashed, contact, emergency_contact)
             flash('Registered')
             return redirect('/')
         else:
@@ -285,7 +287,7 @@ def submit_schedule():
         for key in data:
             if data[key]:
                 days.append(key)
-        schedule_data['days'] = days
+        schedule_data['notification'] = days
         add_medicine(session['user'], schedule_data)
         return redirect('/schedule')
     else:

@@ -17,11 +17,13 @@ def check_existing_user(email):
         return False
 
 
-def add_new_user(name, email, password):
+def add_new_user(name, email, password, contact, emergency_contact):
     user_collection.insert_one({
         '_id': email.lower(),
         'name': name,
-        'password': password
+        'password': password,
+        'contact':contact,
+        'emergency_contact':emergency_contact
     })
     schedules.insert_one({
         '_id':email.lower(),
