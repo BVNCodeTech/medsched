@@ -10,6 +10,7 @@ from functions.medscraper import get_medicines
 from functions.prescription import add_prescription, add_prescription_record, fetch_prescriptions, prescription_card
 from datetime import datetime, timedelta
 import os
+from threading import Thread
 
 app = Flask(__name__)
 app.secret_key = 'subhogay'
@@ -263,6 +264,7 @@ def add_schedule():
 def submit_schedule():
     data = request.form
     data = data.copy()
+    print(data)
     dose_time = datetime.strptime(f"{data['hours']}:{data['minutes']} {data['halftime']}", '%I:%M %p')
     schedule_data = {
         'medicine_name': data['medicine-name'],

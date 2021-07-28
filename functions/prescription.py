@@ -9,7 +9,6 @@ db = client['medicine_schedule']
 prescriptiondb = db['prescriptions']
 
 oc = owncloud.Client('https://drive.teamcodetech.in/')
-
 EMAIL_ADDRESS = 'pancham@teamcodetech.in'
 PASSWORD = ''
 oc.login(EMAIL_ADDRESS, PASSWORD)
