@@ -85,6 +85,8 @@ Adding A Reminder
 ![screencast3](docs/screencast_3.png)
 Uploading prescriptions
 
-# Contributing 
+# Event Details
 
-Please check CONTRIBUTING.md for relevent information
+| Event | Code | Demo | Participants/Authors | Result |
+| --- | --- | --- | --- | -- |
+| Hackathon  | [Code](https://github.com/BVNCodeTech/medsched/) | [Demo](#):N/A | Pancham Agarwal, Aryan Sharma, Aditya Gupta | Did Not Win Finals |
