@@ -13,6 +13,13 @@ Another area where medSCHED will be helping people is with its own in-built mini
 
 medSCHED also comes with a web-scraper which would allow you to see related information about the medicine by searching on trusted sources, making recongition of medicines way easier.
 
+# Event Details
+
+| Event | Code | Demo | Participants/Authors | Result |
+| --- | --- | --- | --- | -- |
+| Hackathon  | [Code](https://github.com/BVNCodeTech/medsched/) | [Demo](#):N/A | Pancham Agarwal, Aryan Sharma, Aditya Gupta | Did Not Win Finals |
+
+
 # Installation
 
 In case you want to run a development server on your local machine, then follow the following steps.
@@ -84,9 +91,3 @@ Adding A Reminder
 
 ![screencast3](docs/screencast_3.png)
 Uploading prescriptions
-
-# Event Details
-
-| Event | Code | Demo | Participants/Authors | Result |
-| --- | --- | --- | --- | -- |
-| Hackathon  | [Code](https://github.com/BVNCodeTech/medsched/) | [Demo](#):N/A | Pancham Agarwal, Aryan Sharma, Aditya Gupta | Did Not Win Finals |
